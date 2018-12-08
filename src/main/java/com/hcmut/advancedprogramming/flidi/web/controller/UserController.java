@@ -1,5 +1,6 @@
 package com.hcmut.advancedprogramming.flidi.web.controller;
 
+import com.hcmut.advancedprogramming.flidi.dto.request.PasswordUpdateRequest;
 import com.hcmut.advancedprogramming.flidi.dto.request.UserUpdateRequest;
 import com.hcmut.advancedprogramming.flidi.dto.response.ApiResponse;
 import com.hcmut.advancedprogramming.flidi.dto.response.UserIdentityAvailability;
@@ -80,5 +81,23 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(new ApiResponse(true, "User updated successfully"));
+    }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordUpdateRequest passwordUpdateRequest,
+                                            @ PathVariable Long id, @CurrentUser UserPrincipal currentUser) {
+
+        if (passwordUpdateRequest.getId() != id) {
+            throw new UpdateIdMismatchException();
+        }
+
+        if (!StringUtils.equals(passwordUpdateRequest.getUsername(), currentUser.getUsername())) {
+            throw new BadRequestException("Can not change password of other!");
+        }
+
+        userService.changePassword(passwordUpdateRequest);
+
+        return ResponseEntity.ok()
+                .body(new ApiResponse(true, "Password changed successfully"));
     }
 }
