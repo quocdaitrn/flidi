@@ -83,7 +83,7 @@ public class BlogServiceImpl implements BlogService {
         User user = userRepository.findByUsername(blogRequest.getCreateOrModifyBy())
                         .orElseThrow(() -> new ResourceNotFoundException("User", "username", blogRequest.getCreateOrModifyBy()));
 
-        if (blogRequest.isCreate()){
+        if (blogRequest.getIsCreate()) {
             blog = new Blog();
             blog.setUser(user);
             blog.setStatus(BlogDomainStatus.ACTIVE);

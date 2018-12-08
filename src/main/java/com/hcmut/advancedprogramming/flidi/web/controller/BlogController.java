@@ -43,7 +43,7 @@ public class BlogController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createBlog(@Valid @RequestBody BlogRequest blogRequest, @CurrentUser UserPrincipal currentUser) {
         blogRequest.setCreateOrModifyBy(currentUser.getUsername());
-        blogRequest.setCreate(true);
+        blogRequest.setIsCreate(true);
         Blog blog = blogService.create(blogRequest);
 
         URI location = ServletUriComponentsBuilder
@@ -63,7 +63,7 @@ public class BlogController {
         }
 
         blogRequest.setCreateOrModifyBy(currentUser.getUsername());
-        blogRequest.setCreate(false);
+        blogRequest.setIsCreate(false);
         blogService.update(blogRequest);
 
         return ResponseEntity.ok()
