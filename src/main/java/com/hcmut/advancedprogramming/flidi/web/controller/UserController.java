@@ -1,5 +1,6 @@
 package com.hcmut.advancedprogramming.flidi.web.controller;
 
+import com.hcmut.advancedprogramming.flidi.dto.response.UserIdentityAvailability;
 import com.hcmut.advancedprogramming.flidi.dto.response.UserSummary;
 import com.hcmut.advancedprogramming.flidi.persistence.repository.UserRepository;
 import com.hcmut.advancedprogramming.flidi.security.CurrentUser;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,5 +35,16 @@ public class UserController {
         return userSummary;
     }
 
+    @GetMapping("/checkUsernameAvailability")
+    public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
+        Boolean isAvailable = !userRepository.existsByUsername(username);
+        return new UserIdentityAvailability(isAvailable);
+    }
+
+    @GetMapping("/checkEmailAvailability")
+    public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
+        Boolean isAvailable = !userRepository.existsByEmail(email);
+        return new UserIdentityAvailability(isAvailable);
+    }
 
 }
