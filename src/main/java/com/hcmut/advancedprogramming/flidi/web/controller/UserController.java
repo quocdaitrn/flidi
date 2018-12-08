@@ -1,7 +1,14 @@
 package com.hcmut.advancedprogramming.flidi.web.controller;
 
+import com.hcmut.advancedprogramming.flidi.dto.request.UserUpdateRequest;
+import com.hcmut.advancedprogramming.flidi.dto.response.ApiResponse;
 import com.hcmut.advancedprogramming.flidi.dto.response.UserIdentityAvailability;
+import com.hcmut.advancedprogramming.flidi.dto.response.UserProfile;
 import com.hcmut.advancedprogramming.flidi.dto.response.UserSummary;
+import com.hcmut.advancedprogramming.flidi.exception.BadRequestException;
+import com.hcmut.advancedprogramming.flidi.exception.ResourceNotFoundException;
+import com.hcmut.advancedprogramming.flidi.exception.UpdateIdMismatchException;
+import com.hcmut.advancedprogramming.flidi.persistence.model.User;
 import com.hcmut.advancedprogramming.flidi.persistence.repository.UserRepository;
 import com.hcmut.advancedprogramming.flidi.security.CurrentUser;
 import com.hcmut.advancedprogramming.flidi.security.UserPrincipal;
@@ -10,11 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -47,4 +54,31 @@ public class UserController {
         return new UserIdentityAvailability(isAvailable);
     }
 
+    @GetMapping("/{username}")
+    public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+
+        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
+                StringUtils.join(user.getFirstName(), " ", user.getLastName()), user.getCreatedAt());
+
+        return userProfile;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest, @PathVariable Long id,
+                                        @CurrentUser UserPrincipal currentUser) {
+        if (userUpdateRequest.getId() != id) {
+            throw new UpdateIdMismatchException();
+        }
+
+        if (!StringUtils.equals(userUpdateRequest.getEmail(), currentUser.getEmail())) {
+            throw new BadRequestException("Can not update information of other!");
+        }
+
+        userService.update(userUpdateRequest);
+
+        return ResponseEntity.ok()
+                .body(new ApiResponse(true, "User updated successfully"));
+    }
 }
