@@ -14,6 +14,7 @@ import com.hcmut.advancedprogramming.flidi.persistence.repository.MediaGalleryRe
 import com.hcmut.advancedprogramming.flidi.persistence.repository.UserRepository;
 import com.hcmut.advancedprogramming.flidi.security.UserPrincipal;
 import com.hcmut.advancedprogramming.flidi.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,12 +47,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findByBlog(Long blogId) {
-        return commentRepository.findByBlog(blogId);
+        return commentRepository.findByBlogId(blogId);
     }
 
     @Override
     public List<Comment> findByMedia(Long mediaId) {
-        return commentRepository.findByMedia(mediaId);
+        return commentRepository.findByMediaId(mediaId);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
         Blog blog;
         MediaGallery mediaGallery;
 
-        if (commentRequest.getType() == CommentDomainType.BLOG) {
+        if (StringUtils.equals(commentRequest.getType(), CommentDomainType.BLOG.name())) {
             notNull(commentRequest.getBlogId(), "Blog's id must not be null");
             blog = blogRepository.findById(commentRequest.getBlogId())
                     .orElseThrow(() -> new ResourceNotFoundException("Blog", "id", commentRequest.getBlogId()));
@@ -75,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         comment.setDetail(commentRequest.getDetail());
-        comment.setType(commentRequest.getType());
+        comment.setType(CommentDomainType.valueOf(commentRequest.getType()));
 
         User user = userRepository.findById(commentRequest.getUserId())
                         .orElseThrow(() -> new ResourceNotFoundException("User", "id", commentRequest.getUserId()));

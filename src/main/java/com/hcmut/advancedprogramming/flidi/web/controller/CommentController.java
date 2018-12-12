@@ -41,7 +41,7 @@ public class CommentController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> addComment(@Valid CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
+    public ResponseEntity<?> addComment(@Valid @RequestBody CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
         commentRequest.setUserId(currentUser.getId());
         Comment comment = commentService.add(commentRequest);
 
@@ -55,7 +55,7 @@ public class CommentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> editComment(@PathVariable Long id, @Valid CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
+    public ResponseEntity<?> editComment(@PathVariable Long id, @Valid @RequestBody CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
         if (id != commentRequest.getCommentId()) {
             throw new UpdateIdMismatchException();
         }

@@ -46,12 +46,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(passwordUpdateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", passwordUpdateRequest.getId()));
 
-        String oldPassword = passwordEncoder.encode(passwordUpdateRequest.getOldPassword());
-        if (!StringUtils.equals(oldPassword, user.getPassword())) {
+        if (passwordEncoder.matches(passwordUpdateRequest.getOldPassword(), user.getPassword())) {
             throw new BadRequestException("Wrong password");
         }
 
         String password = passwordEncoder.encode(passwordUpdateRequest.getNewPassword());
         user.setPassword(password);
+        userRepository.save(user);
     }
 }

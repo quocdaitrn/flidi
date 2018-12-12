@@ -15,7 +15,7 @@ public class CommentRequest {
     private String detail;
 
     @NotBlank
-    private CommentDomainType type;
+    private String type;
 
     private Long mediaId;
 
