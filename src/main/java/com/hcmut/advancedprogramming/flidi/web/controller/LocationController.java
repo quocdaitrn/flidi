@@ -44,7 +44,7 @@ public class LocationController {
     }
 
     @GetMapping("/search")
-    public List<Location> search(@RequestParam(value = "search") String search) {
+    public List<LocationResponse> search(@RequestParam(value = "search") String search) {
         LocationSpecificationBuilder builder = new LocationSpecificationBuilder();
         String operationSetExper = Joiner.on("|")
                 .join(SearchOperation.SIMPLE_OPERATION_SET);
@@ -57,7 +57,7 @@ public class LocationController {
         }
 
         Specification<Location> spec = builder.build();
-        return locationRepository.findAll(spec);
+        return locationService.search(spec);
     }
 
     @GetMapping("/province/{id}")

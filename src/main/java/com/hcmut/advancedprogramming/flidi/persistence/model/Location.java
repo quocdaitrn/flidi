@@ -30,6 +30,10 @@ public class Location extends AbstractEntity {
     @JsonManagedReference
     private List<Blog> blogs;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
+    @JsonManagedReference
+    private List<Rating> ratings;
+
     @Column(name = "image", nullable = false)
     private String image;
 
@@ -42,16 +46,25 @@ public class Location extends AbstractEntity {
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
+    @Column(name = "rate_total")
+    private float rateTotal;
+
+    @Column(name = "rate_count")
+    private int rateCount;
+
     @Enumerated
     @Column(name = "status", columnDefinition = "smallint", nullable = false)
     private LocationDomainStatus status;
+
+    @Column(name = "search_pid", nullable = false)
+    private Long searchPid;
 
     public Location() {
         super();
     }
 
     public Location(String locationName, String description, String address, Province province, String image,
-                    String detail, Double longitude, Double latitude, LocationDomainStatus status) {
+                    String detail, Double longitude, Double latitude, LocationDomainStatus status, Long searchPid) {
         this.locationName = locationName;
         this.description = description;
         this.address = address;
@@ -61,6 +74,7 @@ public class Location extends AbstractEntity {
         this.longitude = longitude;
         this.latitude = latitude;
         this.status = status;
+        this.searchPid = searchPid;
     }
 
     public String getLocationName() {
@@ -103,6 +117,14 @@ public class Location extends AbstractEntity {
         this.blogs = blogs;
     }
 
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
     public String getImage() {
         return image;
     }
@@ -135,11 +157,35 @@ public class Location extends AbstractEntity {
         this.latitude = latitude;
     }
 
+    public float getRateTotal() {
+        return rateTotal;
+    }
+
+    public void setRateTotal(float rateTotal) {
+        this.rateTotal = rateTotal;
+    }
+
+    public int getRateCount() {
+        return rateCount;
+    }
+
+    public void setRateCount(int rateCount) {
+        this.rateCount = rateCount;
+    }
+
     public LocationDomainStatus getStatus() {
         return status;
     }
 
     public void setStatus(LocationDomainStatus status) {
         this.status = status;
+    }
+
+    public Long getSearchPid() {
+        return searchPid;
+    }
+
+    public void setSearchPid(Long searchPid) {
+        this.searchPid = searchPid;
     }
 }

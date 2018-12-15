@@ -10,6 +10,7 @@ import com.hcmut.advancedprogramming.flidi.persistence.repository.LocationReposi
 import com.hcmut.advancedprogramming.flidi.persistence.repository.ProvinceRepository;
 import com.hcmut.advancedprogramming.flidi.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,10 +40,10 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<LocationResponse> searchByName(String name) {
+    public List<LocationResponse> search(Specification<Location> spec) {
         List<LocationResponse> locationResponses = new ArrayList<>();
 
-        List<Location> locations = locationRepository.search(name);
+        List<Location> locations = locationRepository.findAll(spec);
         for (Location l : locations) {
             locationResponses.add(locationMapping(l));
         }
@@ -78,6 +79,7 @@ public class LocationServiceImpl implements LocationService {
         location.setLongitude(request.getLongitude());
         location.setStatus(request.getStatus());
         location.setProvince(province);
+        location.setSearchPid(province.getId());
 
         return locationRepository.save(location);
     }
@@ -95,6 +97,11 @@ public class LocationServiceImpl implements LocationService {
         locationResponse.setLongitude(l.getLongitude());
         locationResponse.setProvince(provinceInLocationMapping(l.getProvince()));
         locationResponse.setStatus(l.getStatus());
+        if (l.getRateCount() == 0) {
+            locationResponse.setRating(0);
+        } else {
+            locationResponse.setRating(l.getRateTotal() / l.getRateCount());
+        }
 
         return locationResponse;
     }

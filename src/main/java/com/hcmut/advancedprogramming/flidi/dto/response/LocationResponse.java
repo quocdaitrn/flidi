@@ -19,4 +19,5 @@ public class LocationResponse {
     private Double latitude;
     private Double longitude;
     private LocationDomainStatus status;
+    private float rating;
 }
