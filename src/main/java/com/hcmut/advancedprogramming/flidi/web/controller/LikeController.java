@@ -39,8 +39,8 @@ public class LikeController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> addLike(@Valid LikeRequest likeRequest, @CurrentUser UserPrincipal currentUser) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> addLike(@Valid @RequestBody LikeRequest likeRequest, @CurrentUser UserPrincipal currentUser) {
         likeRequest.setUserId(currentUser.getId());
         Like like = likeService.add(likeRequest);
 
@@ -53,7 +53,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteLike(@PathVariable Long id, @CurrentUser UserPrincipal currentUser) {
         likeService.delete(id, currentUser);
 

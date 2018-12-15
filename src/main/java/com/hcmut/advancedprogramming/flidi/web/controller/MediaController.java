@@ -33,13 +33,13 @@ public class MediaController {
     private MediaGalleryService mediaGalleryService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public MediaUploadResponse uploadMedia(@RequestParam("media") MultipartFile media, @RequestParam("gallery_id") Long galleryId,
                                            @RequestParam("description") String description, @CurrentUser UserPrincipal currentUser) {
         String fileName = mediaGalleryService.store(media, galleryId, description, currentUser);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/medias/")
+                .path("/api/medias/")
                 .path(fileName)
                 .toUriString();
 
@@ -48,7 +48,7 @@ public class MediaController {
     }
 
     @PostMapping("/multiple")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<MediaUploadResponse> uploadMultipleMedias(@RequestParam("medias") MultipartFile[] medias, @RequestParam("gallery_id") Long galleryId,
                                                           @RequestParam("description") String description, @CurrentUser UserPrincipal currentUser) {
         return Arrays.asList(medias)
@@ -82,7 +82,7 @@ public class MediaController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteMedia(@PathVariable Long id, @CurrentUser UserPrincipal currentUser) {
         mediaGalleryService.delete(id, currentUser);
 

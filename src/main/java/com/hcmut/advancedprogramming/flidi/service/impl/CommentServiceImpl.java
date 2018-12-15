@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
         Blog blog;
         MediaGallery mediaGallery;
 
-        if (StringUtils.equals(commentRequest.getType(), CommentDomainType.BLOG.name())) {
+        if (CommentDomainType.BLOG == commentRequest.getType()) {
             notNull(commentRequest.getBlogId(), "Blog's id must not be null");
             blog = blogRepository.findById(commentRequest.getBlogId())
                     .orElseThrow(() -> new ResourceNotFoundException("Blog", "id", commentRequest.getBlogId()));
@@ -76,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         comment.setDetail(commentRequest.getDetail());
-        comment.setType(CommentDomainType.valueOf(commentRequest.getType()));
+        comment.setType(commentRequest.getType());
 
         User user = userRepository.findById(commentRequest.getUserId())
                         .orElseThrow(() -> new ResourceNotFoundException("User", "id", commentRequest.getUserId()));

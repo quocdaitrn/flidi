@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(passwordUpdateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", passwordUpdateRequest.getId()));
 
-        if (passwordEncoder.matches(passwordUpdateRequest.getOldPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordUpdateRequest.getOldPassword(), user.getPassword())) {
             throw new BadRequestException("Wrong password");
         }
 

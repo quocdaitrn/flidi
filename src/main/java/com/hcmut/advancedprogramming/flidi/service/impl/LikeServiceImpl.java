@@ -46,12 +46,12 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public List<Like> findByBlog(Long blogId) {
-        return likeRepository.findByBlog(blogId);
+        return likeRepository.findByBlogId(blogId);
     }
 
     @Override
     public List<Like> findByMedia(Long mediaId) {
-        return likeRepository.findByMedia(mediaId);
+        return likeRepository.findByMediaId(mediaId);
     }
 
     @Override

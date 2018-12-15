@@ -40,7 +40,7 @@ public class CommentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addComment(@Valid @RequestBody CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
         commentRequest.setUserId(currentUser.getId());
         Comment comment = commentService.add(commentRequest);
@@ -54,7 +54,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> editComment(@PathVariable Long id, @Valid @RequestBody CommentRequest commentRequest, @CurrentUser UserPrincipal currentUser) {
         if (id != commentRequest.getCommentId()) {
             throw new UpdateIdMismatchException();
@@ -68,7 +68,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteComment(@PathVariable Long id, @CurrentUser UserPrincipal currentUser) {
         commentService.delete(id, currentUser);
 

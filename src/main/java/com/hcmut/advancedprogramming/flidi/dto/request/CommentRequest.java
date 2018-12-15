@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -14,8 +15,8 @@ public class CommentRequest {
     @NotBlank
     private String detail;
 
-    @NotBlank
-    private String type;
+    @NotNull
+    private CommentDomainType type;
 
     private Long mediaId;
 

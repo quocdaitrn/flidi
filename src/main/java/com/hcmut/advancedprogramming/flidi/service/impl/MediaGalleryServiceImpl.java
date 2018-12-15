@@ -60,15 +60,19 @@ public class MediaGalleryServiceImpl implements MediaGalleryService {
 
     @Override
     public String store(MultipartFile file, Long galleryId, String description, UserPrincipal currentUser) {
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        MediaGallery mediaGallery = mediaGalleryRepository.findByMediaName(fileName).get();
+        if (mediaGallery != null) {
+            throw new BadRequestException("File already exists");
+        }
+
         Gallery gallery = galleryRepository.findById(galleryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Gallery", "id", galleryId));
 
         User user = userRepository.findByUsername(currentUser.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", currentUser.getUsername()));
-
-
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             // Check if the file's name contains invalid characters
@@ -81,12 +85,13 @@ public class MediaGalleryServiceImpl implements MediaGalleryService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String imgUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/upload/")
+                    .path("/api/medias/")
                     .path(fileName)
                     .toUriString();
 
-            MediaGallery mediaGallery = new MediaGallery();
+            mediaGallery = new MediaGallery();
             mediaGallery.setGallery(gallery);
+            mediaGallery.setMediaName(fileName);
             mediaGallery.setUser(user);
             mediaGallery.setDescription(description);
             mediaGallery.setImgurl(imgUrl);
@@ -101,6 +106,9 @@ public class MediaGalleryServiceImpl implements MediaGalleryService {
 
     @Override
     public Resource load(String name) {
+        mediaGalleryRepository.findByMediaName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("MediaGallery", "name", name));
+
         try {
             Path filePath = this.fileStorageLocation.resolve(name).normalize();
             Resource resource = new UrlResource(filePath.toUri());

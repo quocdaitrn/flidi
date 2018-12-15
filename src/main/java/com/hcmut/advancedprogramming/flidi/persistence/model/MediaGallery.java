@@ -11,6 +11,9 @@ public class MediaGallery extends AbstractEntity {
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
 
+    @Column(name = "media_name", nullable = false)
+    private String mediaName;
+
     @Column(name = "description")
     private String description;
 
@@ -38,6 +41,14 @@ public class MediaGallery extends AbstractEntity {
 
     public void setGallery(Gallery gallery) {
         this.gallery = gallery;
+    }
+
+    public String getMediaName() {
+        return mediaName;
+    }
+
+    public void setMediaName(String mediaName) {
+        this.mediaName = mediaName;
     }
 
     public String getDescription() {

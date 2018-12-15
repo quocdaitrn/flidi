@@ -14,6 +14,15 @@ public class Province extends AbstractEntity {
     @Column(name = "province_name", nullable = false, unique = true)
     private String provinceName;
 
+    @Column(name = "popular", nullable = false, columnDefinition = "tinyint default 0")
+    private int popular;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
     @Enumerated
     @Column(name = "status", columnDefinition = "smallint", nullable = false)
     private ProvinceDomainStatus status;
@@ -37,6 +46,30 @@ public class Province extends AbstractEntity {
 
     public void setProvinceName(String provinceName) {
         this.provinceName = provinceName;
+    }
+
+    public int getPopular() {
+        return popular;
+    }
+
+    public void setPopular(int popular) {
+        this.popular = popular;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public ProvinceDomainStatus getStatus() {

@@ -40,7 +40,7 @@ public class BlogController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createBlog(@Valid @RequestBody BlogRequest blogRequest, @CurrentUser UserPrincipal currentUser) {
         blogRequest.setCreateOrModifyBy(currentUser.getUsername());
         blogRequest.setIsCreate(true);
@@ -55,7 +55,7 @@ public class BlogController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateBlog(@Valid @RequestBody BlogRequest blogRequest, @PathVariable Long id,
                                         @CurrentUser UserPrincipal currentUser) {
         if (blogRequest.getBlogId() != id) {
@@ -71,7 +71,7 @@ public class BlogController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteBlog(@PathVariable Long id, @CurrentUser UserPrincipal currentUser) {
         blogService.delete(id, currentUser);
         return ResponseEntity.ok()

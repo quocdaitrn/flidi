@@ -37,10 +37,10 @@ public class Location extends AbstractEntity {
     private String detail;
 
     @Column(name = "longitude", nullable = false)
-    private String longitude;
+    private Double longitude;
 
     @Column(name = "latitude", nullable = false)
-    private String latitude;
+    private Double latitude;
 
     @Enumerated
     @Column(name = "status", columnDefinition = "smallint", nullable = false)
@@ -51,7 +51,7 @@ public class Location extends AbstractEntity {
     }
 
     public Location(String locationName, String description, String address, Province province, String image,
-                    String detail, String longitude, String latitude, LocationDomainStatus status) {
+                    String detail, Double longitude, Double latitude, LocationDomainStatus status) {
         this.locationName = locationName;
         this.description = description;
         this.address = address;
@@ -95,6 +95,14 @@ public class Location extends AbstractEntity {
         this.province = province;
     }
 
+    public List<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<Blog> blogs) {
+        this.blogs = blogs;
+    }
+
     public String getImage() {
         return image;
     }
@@ -111,19 +119,19 @@ public class Location extends AbstractEntity {
         this.detail = detail;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
@@ -133,13 +141,5 @@ public class Location extends AbstractEntity {
 
     public void setStatus(LocationDomainStatus status) {
         this.status = status;
-    }
-
-    public List<Blog> getBlogs() {
-        return blogs;
-    }
-
-    public void setBlogs(List<Blog> blogs) {
-        this.blogs = blogs;
     }
 }

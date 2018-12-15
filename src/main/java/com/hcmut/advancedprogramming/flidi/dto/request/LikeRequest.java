@@ -5,18 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class LikeRequest {
     private Long id;
 
-    @NotBlank
+    @NotNull
     private LikeDomainType type;
 
     private Long mediaId;
 
     private Long blogId;
 
+    @NotNull
     private Long userId;
 }
