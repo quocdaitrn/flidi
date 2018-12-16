@@ -43,6 +43,11 @@ public class LocationController {
         return locationService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public LocationResponse getLocationById(@PathVariable("id") Long id) {
+        return locationService.findById(id);
+    }
+
     @GetMapping("/search")
     public List<LocationResponse> search(@RequestParam(value = "search") String search) {
         LocationSpecificationBuilder builder = new LocationSpecificationBuilder();

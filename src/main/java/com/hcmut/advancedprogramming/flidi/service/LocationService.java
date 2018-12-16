@@ -10,6 +10,8 @@ import java.util.List;
 public interface LocationService {
     List<LocationResponse> findAll();
 
+    LocationResponse findById(Long id);
+
     List<LocationResponse> search(Specification<Location> spec);
 
     List<LocationResponse> findByProvince(Long id);

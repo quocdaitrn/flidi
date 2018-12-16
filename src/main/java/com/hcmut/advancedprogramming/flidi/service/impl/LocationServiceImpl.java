@@ -40,6 +40,14 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public LocationResponse findById(Long id) {
+        Location location = locationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Location", "id", id));
+
+        return locationMapping(location);
+    }
+
+    @Override
     public List<LocationResponse> search(Specification<Location> spec) {
         List<LocationResponse> locationResponses = new ArrayList<>();
 
