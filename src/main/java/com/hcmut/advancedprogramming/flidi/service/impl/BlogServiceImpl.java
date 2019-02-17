@@ -50,6 +50,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> findByUser(Long id) {
+        return blogRepository.findByUserId(id);
+    }
+
+    @Override
     public Blog create(BlogRequest blogRequest) {
         blogRequest.setBlogId(null);
         Blog blog = createBlog(blogRequest);

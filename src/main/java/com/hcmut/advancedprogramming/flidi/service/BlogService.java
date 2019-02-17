@@ -13,6 +13,8 @@ public interface BlogService {
 
     Blog findById(Long id);
 
+    List<Blog> findByUser(Long id);
+
     Blog create(BlogRequest blogRequest);
 
     Blog update(BlogRequest blogRequest);

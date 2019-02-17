@@ -39,6 +39,11 @@ public class BlogController {
         return blogService.findById(id);
     }
 
+    @GetMapping("/users/{id}")
+    public List<Blog> findByUser(@PathVariable Long id) {
+        return blogService.findByUser(id);
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createBlog(@Valid @RequestBody BlogRequest blogRequest, @CurrentUser UserPrincipal currentUser) {

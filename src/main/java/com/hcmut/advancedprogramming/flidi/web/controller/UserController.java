@@ -60,8 +60,8 @@ public class UserController {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(),
-                StringUtils.join(user.getFirstName(), " ", user.getLastName()), user.getCreatedAt());
+        UserProfile userProfile = new UserProfile(user.getId(), user.getEmail(), user.getUsername(),
+                user.getFirstName(), user.getLastName(), user.getCreatedAt());
 
         return userProfile;
     }

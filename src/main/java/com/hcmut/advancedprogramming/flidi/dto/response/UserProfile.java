@@ -11,7 +11,9 @@ import java.time.Instant;
 @Setter
 public class UserProfile {
     private Long id;
+    private String email;
     private String username;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Instant joinedAt;
 }
