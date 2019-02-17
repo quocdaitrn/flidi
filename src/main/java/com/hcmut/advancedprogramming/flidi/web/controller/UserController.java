@@ -15,6 +15,7 @@ import com.hcmut.advancedprogramming.flidi.security.CurrentUser;
 import com.hcmut.advancedprogramming.flidi.security.UserPrincipal;
 import com.hcmut.advancedprogramming.flidi.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         UserProfile userProfile = new UserProfile(user.getId(), user.getEmail(), user.getUsername(),
-                user.getFirstName(), user.getLastName(), user.getCreatedAt());
+                String.join(" ", user.getFirstName(), user.getLastName()), user.getFirstName(), user.getLastName(), user.getCreatedAt());
 
         return userProfile;
     }
