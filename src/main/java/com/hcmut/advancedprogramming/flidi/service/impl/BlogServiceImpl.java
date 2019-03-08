@@ -1,6 +1,7 @@
 package com.hcmut.advancedprogramming.flidi.service.impl;
 
 import com.hcmut.advancedprogramming.flidi.dto.request.BlogRequest;
+import com.hcmut.advancedprogramming.flidi.dto.response.BlogResponse;
 import com.hcmut.advancedprogramming.flidi.exception.BadRequestException;
 import com.hcmut.advancedprogramming.flidi.exception.ResourceNotFoundException;
 import com.hcmut.advancedprogramming.flidi.persistence.enumtype.BlogDomainStatus;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notNull;
+import static org.apache.commons.lang3.Validate.validIndex;
 
 @Service
 @Transactional
@@ -44,9 +46,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog findById(Long id) {
-        return blogRepository.findById(id)
+    public BlogResponse findById(Long id) {
+        Blog blog = blogRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog", "id", id));
+
+        BlogResponse blogResponse = createBlogResponse(blog);
+
+        return blogResponse;
     }
 
     @Override
@@ -112,5 +118,21 @@ public class BlogServiceImpl implements BlogService {
         blog.setLocation(location);
 
         return blog;
+    }
+
+    private BlogResponse createBlogResponse(Blog blog) {
+        BlogResponse blogResponse = new BlogResponse();
+        blogResponse.setId(blog.getId());
+        blogResponse.setCreateAt(blog.getCreatedAt());
+        blogResponse.setUpdatedAt(blog.getUpdatedAt());
+        blogResponse.setVersion(blog.getVersion());
+        blogResponse.setBlogTitle(blog.getBlogTitle());
+        blogResponse.setDescription(blog.getDescription());
+        blogResponse.setImage(blog.getImage());
+        blogResponse.setDetail(blog.getDetail());
+        blogResponse.setStatus(blog.getStatus());
+        blogResponse.setLocationName(blog.getLocation().getLocationName());
+
+        return blogResponse;
     }
 }

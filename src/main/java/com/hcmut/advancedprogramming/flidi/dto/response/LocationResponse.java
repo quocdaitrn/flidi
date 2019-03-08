@@ -19,5 +19,10 @@ public class LocationResponse {
     private Double latitude;
     private Double longitude;
     private LocationDomainStatus status;
-    private float rating;
+    private Float rating;
+    private Float rateTotal;
+    private Integer rateCount;
+    private Integer totalUser;
+    private Integer totalBlog;
+    private String cover;
 }

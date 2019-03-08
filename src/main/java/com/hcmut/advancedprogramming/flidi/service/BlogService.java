@@ -1,6 +1,7 @@
 package com.hcmut.advancedprogramming.flidi.service;
 
 import com.hcmut.advancedprogramming.flidi.dto.request.BlogRequest;
+import com.hcmut.advancedprogramming.flidi.dto.response.BlogResponse;
 import com.hcmut.advancedprogramming.flidi.persistence.model.Blog;
 import com.hcmut.advancedprogramming.flidi.security.UserPrincipal;
 
@@ -11,7 +12,7 @@ public interface BlogService {
 
     List<Blog> findByLocation(Long locationId);
 
-    Blog findById(Long id);
+    BlogResponse findById(Long id);
 
     List<Blog> findByUser(Long id);
 

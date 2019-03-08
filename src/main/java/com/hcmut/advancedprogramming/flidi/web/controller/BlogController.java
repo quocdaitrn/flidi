@@ -2,6 +2,7 @@ package com.hcmut.advancedprogramming.flidi.web.controller;
 
 import com.hcmut.advancedprogramming.flidi.dto.request.BlogRequest;
 import com.hcmut.advancedprogramming.flidi.dto.response.ApiResponse;
+import com.hcmut.advancedprogramming.flidi.dto.response.BlogResponse;
 import com.hcmut.advancedprogramming.flidi.exception.UpdateIdMismatchException;
 import com.hcmut.advancedprogramming.flidi.persistence.model.Blog;
 import com.hcmut.advancedprogramming.flidi.security.CurrentUser;
@@ -35,7 +36,7 @@ public class BlogController {
     }
 
     @GetMapping("/{id}")
-    public Blog findById(@PathVariable Long id) {
+    public BlogResponse findById(@PathVariable Long id) {
         return blogService.findById(id);
     }
 

@@ -47,10 +47,22 @@ public class Location extends AbstractEntity {
     private Double latitude;
 
     @Column(name = "rate_total")
-    private float rateTotal;
+    private Float rateTotal;
 
     @Column(name = "rate_count")
-    private int rateCount;
+    private Integer rateCount;
+
+    @Column(name = "rating")
+    private Float rating;
+
+    @Column(name = "total_user")
+    private Integer totalUser;
+
+    @Column(name = "total_blog")
+    private Integer totalBlog;
+
+    @Column(name = "cover")
+    private String cover;
 
     @Enumerated
     @Column(name = "status", columnDefinition = "smallint", nullable = false)
@@ -157,20 +169,52 @@ public class Location extends AbstractEntity {
         this.latitude = latitude;
     }
 
-    public float getRateTotal() {
+    public Float getRateTotal() {
         return rateTotal;
     }
 
-    public void setRateTotal(float rateTotal) {
+    public void setRateTotal(Float rateTotal) {
         this.rateTotal = rateTotal;
     }
 
-    public int getRateCount() {
+    public Integer getRateCount() {
         return rateCount;
     }
 
-    public void setRateCount(int rateCount) {
+    public void setRateCount(Integer rateCount) {
         this.rateCount = rateCount;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
+    public Integer getTotalUser() {
+        return totalUser;
+    }
+
+    public void setTotalUser(Integer totalUser) {
+        this.totalUser = totalUser;
+    }
+
+    public Integer getTotalBlog() {
+        return totalBlog;
+    }
+
+    public void setTotalBlog(Integer totalBlog) {
+        this.totalBlog = totalBlog;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public LocationDomainStatus getStatus() {

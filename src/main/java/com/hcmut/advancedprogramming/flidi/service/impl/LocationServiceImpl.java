@@ -105,11 +105,12 @@ public class LocationServiceImpl implements LocationService {
         locationResponse.setLongitude(l.getLongitude());
         locationResponse.setProvince(provinceInLocationMapping(l.getProvince()));
         locationResponse.setStatus(l.getStatus());
-        if (l.getRateCount() == 0) {
-            locationResponse.setRating(0);
-        } else {
-            locationResponse.setRating(l.getRateTotal() / l.getRateCount());
-        }
+        locationResponse.setRating(l.getRating());
+        locationResponse.setRateCount(l.getRateCount());
+        locationResponse.setRateTotal(l.getRateTotal());
+        locationResponse.setTotalBlog(l.getTotalBlog());
+        locationResponse.setTotalUser(l.getTotalUser());
+        locationResponse.setCover(l.getCover());
 
         return locationResponse;
     }
